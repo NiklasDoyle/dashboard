@@ -8,16 +8,16 @@ interface WidgetBlockProps {
     h?: string | number
 }
 
-function WidgetBlock({ children, backgroundGradient, useGradient = true, color = 'backgroundBlue.6', h}: WidgetBlockProps) {
+function WidgetBlock({ children, backgroundGradient, useGradient = false, color = 'background.1', h}: WidgetBlockProps) {
     const theme = useMantineTheme();
     const gradient = backgroundGradient
         ? getGradient(backgroundGradient, theme)
-        : getGradient({ deg: 360, from: 'backgroundBlue.5', to: 'backgroundBlue.6' }, theme);
+        : getGradient({ deg: 360, from: 'background.2', to: 'background.3' }, theme);
     
     return (
         <Paper
             bg={useGradient ? gradient : color}
-            radius={40}
+            radius={15}
             p={20}
             h={h ?? 'auto'}
             style={{

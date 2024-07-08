@@ -28,25 +28,32 @@ function useCalEvents({ daysBefore = 30, daysAfter = 30 }: useCalEventsProps) {
                         events: [
                             {
                                 title: 'Event 1',
-                                day: new Date(),
+                                days: [new Date()],
                                 startTime: '12:00:00 PM',
                                 endTime: '13:00:00 PM',
+                                allDay: false,
                                 description: 'Sample',
                                 color: 6,
                             },
                             {
-                                title: 'Event 2',
-                                day: new Date(),
+                                title: 'All Day Event',
+                                days: [
+                                    new Date(),
+                                    new Date(new Date().setDate(new Date().getDate() + 1)),
+                                    new Date(new Date().setDate(new Date().getDate() + 2)),
+                                ],
                                 startTime: '12:00:00 PM',
                                 endTime: '13:00:00 PM',
+                                allDay: true,
                                 description: 'Sample',
                                 color: 4,
                             },
                             {
                                 title: 'Super Long Even title',
-                                day: new Date(),
+                                days: [new Date()],
                                 startTime: '12:00:00 PM',
                                 endTime: '13:00:00 PM',
+                                allDay: false,
                                 description: 'Sample',
                                 color: 5,
                             },
@@ -62,14 +69,14 @@ function useCalEvents({ daysBefore = 30, daysAfter = 30 }: useCalEventsProps) {
                 data.events.map((event: Event) => {
                     const formattedEvent = {
                         title: event.title,
-                        day: new Date(event.day),
+                        days: event.allDay ? event.days.map((day:Date) => new Date(day)) : [new Date(event.days[0])],
                         startTime: event.startTime,
                         endTime: event.endTime,
+                        allDay: true,
                         description: event.description,
                         color: event.color,
                     };
-                    if (event.startTime === 'All Day') {
-                        formattedEvent.color = 1;
+                    if (event.allDay) {
                         nextAllDayEvents.push(formattedEvent);
                     } else {
                         nextEvents.push(formattedEvent);

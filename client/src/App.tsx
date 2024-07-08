@@ -1,7 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Bedtime from './pages/Bedtime/Bedtime';
-import Wakeup from './pages/Wakeup/Wakeup';
+import Dashboard from './pages/Dashboard';
+import RoutinePage from './pages/RoutinePage';
 import '@mantine/core/styles.css';
 
 function App() {
@@ -10,8 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/bed" element={<Bedtime />} />
-        <Route path="/wake" element={<Wakeup />} />
+        <Route path="/routine/:name" element={<RoutinePage />} />
       </Routes>
     </BrowserRouter>
   );

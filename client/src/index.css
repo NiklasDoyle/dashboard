@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.fc-toolbar-title {
+  color: white;
+}
+
+.fc-daygrid-event {
+  color: white;
+}
+
+.fc table {
+  color: white;
+}

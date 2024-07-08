@@ -12,15 +12,15 @@ interface CalendarDayPaperProps {
 
 function CalendarDayPaper(props: CalendarDayPaperProps) {
     const theme = useMantineTheme();
-    let color = getThemeColor(`greys.5`, theme);
+    let color = getThemeColor(`background.5`, theme);
     if (props.inCurrentMonth) {
         // color = `${getThemeColor(`calendarDayBox.${props.events && props.events.length > 0 ? props.events.length + 4 : 1}`, theme)}`;
         color = `${getThemeColor(`calendarDayBox.1`, theme)}`;
     }
-    const backgroundColor = getGradient({ deg: 360, from: 'greys.3', to: color }, theme)
+    const backgroundColor = getGradient({ deg: 360, from: 'background.3', to: color }, theme)
 
     const formatEvent = (event: Event) => { 
-        if (event.startTime === 'All Day') {
+        if (event.allDay) {
             return `${event.title}`;
         } else {
             const splitTime = event.startTime.split(' ');
@@ -42,12 +42,12 @@ function CalendarDayPaper(props: CalendarDayPaperProps) {
             <Stack
                 gap={5}
                 mt='5'
-                ml='5'
             >
                 <Badge
                     autoContrast
                     size='xl'
-                    color={props.isSelected ? 'selectionColors.7' : 'greys.3'}
+                    ml='5'
+                    color={props.isSelected ? 'selectionColors.7' : 'background.3'}
                     opacity={props.isSelected ? 1 : 0.7}
                     circle>
                     {props.day}
@@ -64,17 +64,22 @@ function CalendarDayPaper(props: CalendarDayPaperProps) {
                             fullWidth
                             key={index}
                             autoContrast
-                            color={`${props.inCurrentMonth ? 'backgroundBlue' : 'greys'}.${event.color}`}
+                            radius={1}
+                            color={`${props.inCurrentMonth ? 'backgroundBlue' : 'background'}.${event.color}`}
                             opacity={0.7}
                             style={{
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
-                                justifyContent: 'left',
+                                justifyContent: 'center',
                             }}
-                            w='110%'
+                            w='100%'
+                            ml={event.days[0].getDate() === props.day
+                                ? '5'
+                                : event.days[event.days.length - 1].getDate() === props.day ? '-5' : '0'}
+                            mr={event.days[event.days.length - 1].getDate() === props.day ? '' : '0'}
                         >
-                            {formatEvent(event)}
+                            {event.days[0].getDate() === props.day && formatEvent(event)}
                         </Badge>
                     ))}
 
@@ -83,7 +88,8 @@ function CalendarDayPaper(props: CalendarDayPaperProps) {
                             fullWidth
                             key={index}
                             autoContrast
-                            color={`${props.inCurrentMonth ? 'backgroundBlue' : 'greys'}.${event.color}`}
+                            ml='5'
+                            color={`${props.inCurrentMonth ? 'backgroundBlue' : 'background'}.${event.color}`}
                             opacity={0.7}
                             style={{
                                 overflow: 'hidden',

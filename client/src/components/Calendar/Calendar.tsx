@@ -11,10 +11,23 @@ function Calendar() {
     const [calendarDays, setCalendarDays] = useState<CalendarDayPaperProps[]>([]);
     const [month, setMonth] = useState<number>();
 
-    const {events, allDayEvents} = useCalEvents({daysBefore: 30, daysAfter: 30});
+    const { events, allDayEvents } = useCalEvents({ daysBefore: 30, daysAfter: 30 });
+    console.log(allDayEvents)
+    
+    const filterEventsOnDay = (events: Event[], currentDate: Date): Event[] => {
+        let onDayEvents: Event[] = [];
+        events.map((event) => {
+            event.days.map((day) => {
+                if (day.getDate() === currentDate.getDate() && day.getMonth() === currentDate.getMonth()) {
+                    onDayEvents.push(event);
+                }
+            });
+        });
+        onDayEvents.sort((a, b) => a.title.localeCompare(b.title));
+        return onDayEvents;
+    }
 
     useEffect(() => {
-        console.log(events);
         const today = new Date();
         const firstDayOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         const lastSunday = new Date(firstDayOfThisMonth.setDate(firstDayOfThisMonth.getDate() - firstDayOfThisMonth.getDay()));
@@ -27,8 +40,8 @@ function Calendar() {
                 day: currentDay.getDate(),
                 inCurrentMonth: currentDay.getMonth() === today.getMonth(),
                 isSelected: currentDay.getDate() === today.getDate(),
-                events: events.filter((event) => event.day.getDate() === currentDay.getDate() && event.day.getMonth() === currentDay.getMonth()),
-                allDayEvents: allDayEvents.filter((event) => event.day.getDate() === currentDay.getDate() && event.day.getMonth() === currentDay.getMonth())
+                events: filterEventsOnDay(events, currentDay),
+                allDayEvents: filterEventsOnDay(allDayEvents, currentDay),
             });
             currentDay = new Date(currentDay.setDate(currentDay.getDate() + 1));
         }
